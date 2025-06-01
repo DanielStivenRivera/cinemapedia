@@ -54,6 +54,7 @@ class _Slide extends StatelessWidget {
         decoration: decoration,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
+          clipBehavior: Clip.hardEdge,
           child: Image.network(
             movie.backdropPath,
             fit: BoxFit.cover,
@@ -63,7 +64,56 @@ class _Slide extends StatelessWidget {
                   decoration: BoxDecoration(color: Colors.black12),
                 );
               }
-              return FadeIn(child: child);
+              return FadeIn(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  clipBehavior: Clip.hardEdge,
+                  child: Stack(
+                    children: [
+                      Image.network(
+                        movie.backdropPath,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
+                        loadingBuilder: (ctx, child, loadingProgress) {
+                          if (loadingProgress != null) {
+                            return const DecoratedBox(
+                              decoration: BoxDecoration(color: Colors.black12),
+                            );
+                          }
+                          return child; // FadeIn se aplica ya afuera
+                        },
+                      ),
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.vertical(
+                            bottom: Radius.circular(20),
+                          ),
+                          child: Container(
+                            color: Colors.black87,
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text(
+                                movie.title,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             },
           ),
         ),
