@@ -24,10 +24,10 @@ class FullScreenLoader extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Cargando...'),
-          SizedBox(height: 10),
-          CircularProgressIndicator(strokeWidth: 2),
-          SizedBox(height: 10),
+          const Text('Cargando...'),
+          const SizedBox(height: 10),
+          const CircularProgressIndicator(strokeWidth: 2),
+          const SizedBox(height: 10),
           StreamBuilder(
             stream: getLoadingMessages(),
             builder: (context, snapshot) {

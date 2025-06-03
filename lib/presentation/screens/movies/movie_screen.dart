@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
+  const MovieScreen({required this.movieId, super.key});
   final String movieId;
-
-  const MovieScreen({super.key, required this.movieId});
 
   @override
   MovieScreenState createState() => MovieScreenState();
@@ -49,8 +48,8 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
 }
 
 class _MovieDetails extends StatelessWidget {
-  final Movie movie;
   const _MovieDetails(this.movie);
+  final Movie movie;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +59,7 @@ class _MovieDetails extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -91,7 +90,7 @@ class _MovieDetails extends StatelessWidget {
             children: [
               ...movie.genreIds.map(
                 (gender) => Container(
-                  margin: EdgeInsets.only(right: 10),
+                  margin: const EdgeInsets.only(right: 10),
                   child: Chip(
                     label: Text(gender),
                     shape: RoundedRectangleBorder(
@@ -104,16 +103,15 @@ class _MovieDetails extends StatelessWidget {
           ),
         ),
         _ActorsByMovie(movieId: movie.id),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
       ],
     );
   }
 }
 
 class _CustomSliverAppBar extends StatelessWidget {
-  final Movie movie;
-
   const _CustomSliverAppBar({required this.movie});
+  final Movie movie;
 
   @override
   Widget build(BuildContext context) {
@@ -139,20 +137,20 @@ class _CustomSliverAppBar extends StatelessWidget {
                 },
               ),
             ),
-            SizedBox.expand(
+            const SizedBox.expand(
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    stops: const [0.7, 1.0],
+                    stops: [0.7, 1.0],
                     colors: [Colors.transparent, Colors.black87],
                   ),
                 ),
               ),
             ),
-            SizedBox.expand(
-              child: const DecoratedBox(
+            const SizedBox.expand(
+              child: DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -175,15 +173,15 @@ class _CustomSliverAppBar extends StatelessWidget {
 }
 
 class _ActorsByMovie extends ConsumerWidget {
-  final int movieId;
   const _ActorsByMovie({required this.movieId});
+  final int movieId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final List<Actor>? actorsByMovie =
         ref.watch(actorsByMovieProvider)[movieId.toString()];
     if (actorsByMovie == null) {
-      return Center(child: const CircularProgressIndicator(strokeWidth: 2));
+      return const Center(child: CircularProgressIndicator(strokeWidth: 2));
     }
     return SizedBox(
       height: 300,
@@ -213,7 +211,7 @@ class _ActorsByMovie extends ConsumerWidget {
                 Text(
                   actor.character ?? '',
                   maxLines: 2,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     overflow: TextOverflow.ellipsis,
                   ),

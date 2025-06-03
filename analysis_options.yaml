@@ -1,1 +1,29 @@
 include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # Reglas extra recomendadas para proyectos Flutter
+    always_put_required_named_parameters_first: true
+    avoid_print: true
+    avoid_unnecessary_containers: true
+    cascade_invocations: true
+    constant_identifier_names: true
+    prefer_final_locals: true
+    prefer_final_in_for_each: true
+    prefer_single_quotes: true
+    sort_constructors_first: true
+    sort_unnamed_constructors_first: true
+    unnecessary_await_in_return: true
+    use_super_parameters: true
+
+    # 🔒 Seguridad nula y consistencia
+    annotate_overrides: true
+    avoid_returning_null: true
+    unnecessary_null_checks: true
+    unnecessary_null_in_if_null_operators: true
+
+    # ✅ Reglas para forzar y sugerir uso de const
+    prefer_const_constructors: true
+    prefer_const_constructors_in_immutables: true
+    prefer_const_declarations: true
+    prefer_const_literals_to_create_immutables: true

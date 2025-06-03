@@ -23,7 +23,7 @@ class ActorMoviedbDataSource extends ActorsDatasource {
 
     final castResponse = CreditsResponse.fromJson(response.data);
 
-    List<Actor> actors =
+    final List<Actor> actors =
         castResponse.cast
             .map((element) => ActorMapper.castToEntity(element))
             .toList();

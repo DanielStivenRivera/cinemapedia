@@ -29,10 +29,10 @@ final upcomingMoviesProvider =
 typedef MovieCallback = Future<List<Movie>> Function({int page});
 
 class MoviesNotifier extends StateNotifier<List<Movie>> {
+  MoviesNotifier({required this.fetchMoreMovies}) : super([]);
   int currentPage = 0;
   bool isLoading = false;
   final MovieCallback fetchMoreMovies;
-  MoviesNotifier({required this.fetchMoreMovies}) : super([]);
 
   Future<void> loadNextPage() async {
     if (isLoading) return;

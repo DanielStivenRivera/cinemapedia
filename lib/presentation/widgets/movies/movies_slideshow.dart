@@ -4,8 +4,8 @@ import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
 
 class MoviesSlideShow extends StatelessWidget {
+  const MoviesSlideShow({required this.movies, super.key});
   final List<Movie> movies;
-  const MoviesSlideShow({super.key, required this.movies});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class MoviesSlideShow extends StatelessWidget {
         scale: 0.8,
         autoplay: true,
         pagination: SwiperPagination(
-          margin: EdgeInsets.only(top: 0),
+          margin: const EdgeInsets.only(top: 0),
           builder: DotSwiperPaginationBuilder(
             activeColor: colors.primary,
             color: Colors.black12,
@@ -36,14 +36,14 @@ class MoviesSlideShow extends StatelessWidget {
 }
 
 class _Slide extends StatelessWidget {
-  final Movie movie;
   const _Slide({required this.movie});
+  final Movie movie;
 
   @override
   Widget build(BuildContext context) {
     final decoration = BoxDecoration(
       borderRadius: BorderRadius.circular(20),
-      boxShadow: [
+      boxShadow: const [
         BoxShadow(color: Colors.black45, blurRadius: 10, offset: Offset(0, 10)),
       ],
     );
