@@ -8,28 +8,31 @@ import 'package:flutter/material.dart';
 typedef SearchMoviesCallback = Future<List<Movie>> Function(String query);
 
 class SearchMovieDelegate extends SearchDelegate<Movie?> {
-  SearchMovieDelegate(this._searchMovies);
+  SearchMovieDelegate(this.searchMovies, this.initialMovies);
 
-  final SearchMoviesCallback _searchMovies;
+  final SearchMoviesCallback searchMovies;
+  List<Movie> initialMovies;
 
   StreamController<List<Movie>> debouncedMovies = StreamController.broadcast();
+  StreamController<bool> isLoadingStream = StreamController.broadcast();
 
   Timer? _debounceTimer;
 
   void _onQueryChange(String query) {
+    isLoadingStream.add(true);
     if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
 
     _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
-      if (query.isEmpty) {
-        debouncedMovies.add([]);
-        return;
-      }
-      final movies = await _searchMovies(query);
+      final movies = await searchMovies(query);
+      initialMovies = movies;
       debouncedMovies.add(movies);
+      isLoadingStream.add(false);
     });
   }
 
   void clearStreams() {
+    _debounceTimer?.cancel();
+    if (debouncedMovies.isClosed) return;
     debouncedMovies.close();
   }
 
@@ -39,13 +42,30 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
-      FadeIn(
-        animate: query.isNotEmpty,
-        duration: const Duration(milliseconds: 100),
-        child: IconButton(
-          onPressed: () => query = '',
-          icon: const Icon(Icons.clear_outlined),
-        ),
+      StreamBuilder<bool>(
+        stream: isLoadingStream.stream,
+        initialData: false,
+        builder: (ctx, snapshot) {
+          if (snapshot.data ?? false) {
+            return SpinPerfect(
+              duration: const Duration(seconds: 1),
+              spins: 10,
+              infinite: true,
+              child: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.refresh_outlined),
+              ),
+            );
+          }
+          return FadeIn(
+            animate: query.isNotEmpty,
+            duration: const Duration(milliseconds: 100),
+            child: IconButton(
+              onPressed: () => query = '',
+              icon: const Icon(Icons.clear_outlined),
+            ),
+          );
+        },
       ),
     ];
   }
@@ -63,17 +83,26 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return const Text('Build results');
+    return buildScreen();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
     _onQueryChange(query);
+    return buildScreen();
+  }
+
+  Widget buildScreen() {
+    if (query.isEmpty) {
+      return const Center(
+        child: Text('Escribe el nombre de una película para buscar.'),
+      );
+    }
 
     return StreamBuilder<List<Movie>>(
       // future: _searchMovies(query),
       stream: debouncedMovies.stream,
-      initialData: const [],
+      initialData: initialMovies,
       builder: (ctx, snapshot) {
         final List<Movie> movies = snapshot.data ?? [];
 
