@@ -1,34 +1,52 @@
 import 'package:cinemapedia/presentation/screens/screens.dart';
-import 'package:cinemapedia/presentation/views/home_views/favorites_view.dart';
-import 'package:cinemapedia/presentation/views/home_views/home_view.dart';
+import 'package:cinemapedia/presentation/views/movies/categories_view.dart';
+import 'package:cinemapedia/presentation/views/movies/favorites_view.dart';
+import 'package:cinemapedia/presentation/views/movies/home_view.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/home',
   routes: [
-    ShellRoute(
-      builder: (context, state, child) {
-        return HomeScreen(childView: child);
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return HomeScreen(navigationShell: navigationShell);
       },
-      routes: [
-        GoRoute(
-          path: '/',
-          builder: (context, state) => const HomeView(),
+      branches: [
+        StatefulShellBranch(
           routes: [
             GoRoute(
-              path: 'movie/:id',
-              builder: (context, state) {
-                final movieId = state.pathParameters['id'] ?? 'no-id';
-                return MovieScreen(movieId: movieId);
-              },
+              path: '/home',
+              builder: (context, state) => const HomeView(),
+              routes: [
+                GoRoute(
+                  path: 'movie/:id',
+                  builder: (context, state) {
+                    final movieId = state.pathParameters['id'] ?? '0';
+                    return MovieScreen(movieId: movieId);
+                  },
+                ),
+              ],
             ),
           ],
         ),
-        GoRoute(
-          path: '/favorites',
-          builder: (context, state) => const FavoritesView(),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/categories',
+              builder: (context, state) => const CategoriesView(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/favorites',
+              builder: (context, state) => const FavoritesView(),
+            ),
+          ],
         ),
       ],
     ),
+    GoRoute(path: '/', redirect: (_, __) => '/home'),
   ],
 );

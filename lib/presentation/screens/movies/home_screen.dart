@@ -1,16 +1,26 @@
-import 'package:cinemapedia/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:cinemapedia/presentation/views/movies/favorites_view.dart';
+import 'package:cinemapedia/presentation/views/movies/home_view.dart';
+import 'package:cinemapedia/presentation/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({required this.childView, super.key});
+  const HomeScreen({required this.navigationShell, super.key});
 
-  final Widget childView;
+  final StatefulNavigationShell navigationShell;
+
+  final viewRoutes = const <Widget>[HomeView(), SizedBox(), FavoritesView()];
 
   @override
   Widget build(BuildContext context) {
+    final location = GoRouterState.of(context).uri.toString();
+    final isMovieDetailScreen = location.contains('/movie/');
     return Scaffold(
-      body: childView,
-      bottomNavigationBar: const CustomBottomNavigation(),
+      body: navigationShell,
+      bottomNavigationBar:
+          !isMovieDetailScreen
+              ? CustomBottomNavigation(navigationShell: navigationShell)
+              : null,
     );
   }
 }
