@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cinemapedia/presentation/views/movies/favorites_view.dart';
 import 'package:cinemapedia/presentation/views/movies/home_view.dart';
 import 'package:cinemapedia/presentation/widgets/widgets.dart';
+
+import '../../views/home_views/favorites_view.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({required this.navigationShell, super.key});

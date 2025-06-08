@@ -109,22 +109,37 @@ class _MovieDetails extends StatelessWidget {
   }
 }
 
-class _CustomSliverAppBar extends StatelessWidget {
+final isFavoriteProvider = FutureProvider.family((ref, int movieId) {
+  return ref.read(localStorageRepositoryProvider).isMovieFavorite(movieId);
+});
+
+class _CustomSliverAppBar extends ConsumerWidget {
   const _CustomSliverAppBar({required this.movie});
   final Movie movie;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
+    final isFavoriteFuture = ref.watch(isFavoriteProvider(movie.id));
     return SliverAppBar(
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.7,
       foregroundColor: Colors.white,
       actions: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.favorite_border)),
         IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.favorite_rounded, color: Colors.red),
+          onPressed: () {
+            ref.read(localStorageRepositoryProvider).toggleFavorite(movie);
+            ref.invalidate(isFavoriteProvider(movie.id));
+          },
+          icon: isFavoriteFuture.when(
+            loading: () => const Icon(Icons.favorite_border),
+            data:
+                (isFavorite) =>
+                    isFavorite
+                        ? const Icon(Icons.favorite_rounded, color: Colors.red)
+                        : const Icon(Icons.favorite_border),
+            error: (_, __) => const Icon(Icons.favorite_border),
+          ),
         ),
       ],
       // shadowColor: Colors.red,

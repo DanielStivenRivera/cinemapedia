@@ -20,6 +20,8 @@ class CustomAppBar extends ConsumerWidget {
         child: SizedBox(
           width: double.infinity,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(Icons.movie_creation_outlined, color: colors.primary),
               const SizedBox(width: 5),

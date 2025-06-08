@@ -1,6 +1,6 @@
 import 'package:cinemapedia/presentation/screens/screens.dart';
-import 'package:cinemapedia/presentation/views/movies/categories_view.dart';
-import 'package:cinemapedia/presentation/views/movies/favorites_view.dart';
+import 'package:cinemapedia/presentation/views/home_views/favorites_view.dart';
+import 'package:cinemapedia/presentation/views/home_views/categories_view.dart';
 import 'package:cinemapedia/presentation/views/movies/home_view.dart';
 import 'package:go_router/go_router.dart';
 
