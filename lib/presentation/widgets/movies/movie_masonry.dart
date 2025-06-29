@@ -20,7 +20,6 @@ class _MovieMasonryState extends State<MovieMasonry> {
   void initState() {
     super.initState();
     scrollController.addListener(() {
-      print('initialize');
       if (widget.movies.isEmpty) return;
       if (widget.loadNextPage == null) return;
       if ((scrollController.position.pixels + 100) >=

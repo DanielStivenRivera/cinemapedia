@@ -20,7 +20,6 @@ class HiveDataSource extends LocalStorageDataSource {
 
   @override
   Future<List<Movie>> loadMovies({int limit = 15, offset = 0}) async {
-    print('limit: $limit\n$offset');
     await _ensureBoxOpen();
 
     final allMovies = _movieBox!.values.toList();
